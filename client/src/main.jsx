@@ -5,7 +5,7 @@ import App from "./App.jsx";
 import { AppProvider } from "./context/AppContext.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <BrowserRouter basename={import.meta.env.BASE_URL}>
+  <BrowserRouter>
     <AppProvider>
       <App />
     </AppProvider>

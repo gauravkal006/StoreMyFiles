@@ -2,11 +2,11 @@
 
 StoreMyFiles is a full-stack cloud storage application. Users can create folders, upload files, preview supported files, rename and move items, share files, and restore deleted items from the trash.
 
-The frontend and backend are intentionally separated. The React client is deployed to GitHub Pages, while the Express API can run independently on a Node.js hosting platform.
+The frontend and backend are intentionally separated. The React client can be deployed to Vercel, while the Express API can run independently on a Node.js hosting platform.
 
 ## Demo
 
-[Open the StoreMyFiles demo](https://gauravkal006.github.io/StoreMyFiles/)
+The live demo URL will be available after deploying the client to Vercel.
 
 ## Features
 
@@ -42,7 +42,7 @@ The frontend and backend are intentionally separated. The React client is deploy
 ```text
 Browser
 	|
-	| GitHub Pages
+	| Vercel
 	v
 React/Vite client  --->  Express API  --->  Neon PostgreSQL
 															|
@@ -56,7 +56,8 @@ React/Vite client  --->  Express API  --->  Neon PostgreSQL
 client/
 	src/                 React application
 	public/              Static frontend assets
-	vite.config.js       Vite and GitHub Pages configuration
+	vite.config.js       Vite configuration
+	vercel.json          SPA route rewrites for Vercel
 
 server/
 	config/              Database and storage configuration
@@ -66,8 +67,6 @@ server/
 	services/            Storage services
 	server.js            Express application entry point
 
-.github/workflows/
-	deploy-client.yml    GitHub Pages deployment workflow
 ```
 
 ## Requirements
@@ -140,23 +139,29 @@ The most important production settings are:
 
 ## Deployment
 
-### Frontend: GitHub Pages
+### Frontend: Vercel
 
-The workflow in [.github/workflows/deploy-client.yml](.github/workflows/deploy-client.yml) builds the `client` directory and publishes it to GitHub Pages when changes are pushed to `main`.
+Import the repository into Vercel and configure the project as follows:
 
-Configure the repository with:
+- **Root Directory:** `client`
+- **Framework preset:** Vite
+- **Build command:** `npm run build`
+- **Output directory:** `dist`
+- **Install command:** `npm install`
 
-1. **Settings > Pages > Source:** GitHub Actions
-2. Repository Actions variable `VITE_BASE_URL` set to the public backend URL
-3. A push to `main` or a manual workflow run
+Add this environment variable in Vercel:
 
-The Vite base path and React Router fallback are configured for project pages automatically.
+```env
+VITE_BASE_URL=https://your-backend-service.example.com
+```
+
+The [client/vercel.json](client/vercel.json) rewrite keeps React Router routes working after a page refresh.
 
 ### Backend: independent Node.js hosting
 
 The backend is a standard Express application and can be deployed separately to Koyeb, Render, Railway, or another Node.js service. Use the `server` directory as the service root, `npm install` as the install command, and `npm start` as the production start command. Configure the variables from `server/.env.example` in the hosting provider rather than committing them.
 
-After deployment, set the frontend `VITE_BASE_URL` to the API URL and set the backend `ORIGINS` to the GitHub Pages URL.
+After deployment, set the frontend `VITE_BASE_URL` to the API URL and set the backend `ORIGINS` to the Vercel domain.
 
 ## Security notes
 
