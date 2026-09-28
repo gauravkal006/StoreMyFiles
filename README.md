@@ -6,7 +6,7 @@ The frontend and backend are intentionally separated. The React client can be de
 
 ## Demo
 
-The live demo URL will be available after deploying the client to Vercel.
+The live demo : [text](https://storemyfiles.vercel.app/login)
 
 ## Features
 
