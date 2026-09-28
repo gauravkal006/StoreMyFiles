@@ -6,7 +6,7 @@ The frontend and backend are intentionally separated. The React client can be de
 
 ## Demo
 
-The live demo : [text](https://storemyfiles.vercel.app/login)
+The live demo : [click_here](https://storemyfiles.vercel.app/login)
 
 ## Features
 
