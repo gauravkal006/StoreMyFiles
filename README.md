@@ -2,11 +2,25 @@
 
 StoreMyFiles is a full-stack cloud storage application. Users can create folders, upload files, preview supported files, rename and move items, share files, and restore deleted items from the trash.
 
-The frontend and backend are intentionally separated. The React client can be deployed to Vercel, while the Express API can run independently on a Node.js hosting platform.
+The frontend and backend are intentionally separated: a React client and an Express API.
+
+## Contents
+
+- [Demo](#demo)
+- [Features](#features)
+- [Tech stack](#tech-stack)
+- [Architecture](#architecture)
+- [Project structure](#project-structure)
+- [Requirements](#requirements)
+- [Local development](#local-development)
+- [Available scripts](#available-scripts)
+- [Environment configuration](#environment-configuration)
+- [Security notes](#security-notes)
+- [License](#license)
 
 ## Demo
 
-- **Demo Project:** [StoreMyFiles click_here](https://storemyfiles.vercel.app/login)
+[Open the live demo](https://storemyfiles.vercel.app/login)
 
 ## Features
 
@@ -39,15 +53,17 @@ The frontend and backend are intentionally separated. The React client can be de
 
 ## Architecture
 
-```text
-Browser
-	|
-	| Vercel
-	v
-React/Vite client  --->  Express API  --->  Neon PostgreSQL
-															|
-															v
-											 S3-compatible storage
+```mermaid
+flowchart LR
+  browser[Browser] --> client[React + Vite client]
+  client -->|API requests| api
+
+  subgraph backend[Express API]
+    api[Express API] --> routes[Auth, Files, Folders, Shares, Trash]
+  end
+
+  api -->|SQL queries| database[(Neon PostgreSQL)]
+  api -->|File objects| storage[(S3-compatible storage)]
 ```
 
 ## Project structure
@@ -127,9 +143,12 @@ Run these commands from the corresponding directory:
 
 ## Environment configuration
 
+<details>
+<summary>View environment variables and configuration</summary>
+
 Use [client/.env.example](client/.env.example) and [server/.env.example](server/.env.example) as references. Do not commit `.env` files or real credentials.
 
-The most important production settings are:
+The most important settings are:
 
 - `VITE_BASE_URL`: public URL of the deployed backend
 - `DATABASE_URL`: Neon PostgreSQL connection string
@@ -137,31 +156,7 @@ The most important production settings are:
 - `ORIGINS`: exact public frontend origin
 - `AWS_REGION`, `AWS_ENDPOINT_URL_S3`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_S3_BUCKET`: storage configuration
 
-## Deployment
-
-### Frontend: Vercel
-
-Import the repository into Vercel and configure the project as follows:
-
-- **Root Directory:** `client`
-- **Framework preset:** Vite
-- **Build command:** `npm run build`
-- **Output directory:** `dist`
-- **Install command:** `npm install`
-
-Add this environment variable in Vercel:
-
-```env
-VITE_BASE_URL=https://storemyfiles.onrender.com
-```
-
-The [client/vercel.json](client/vercel.json) rewrite keeps React Router routes working after a page refresh.
-
-### Backend: Render
-
-The Express API is deployed separately on Render. Configure the service with the `server` directory as its root, `npm install` as the build command, and `npm start` as the start command. Add the variables from `server/.env.example` in Render's Environment settings; do not commit real credentials.
-
-After deployment, set the frontend `VITE_BASE_URL` to the API URL and set the backend `ORIGINS` to the Vercel domain.
+</details>
 
 ## Security notes
 
