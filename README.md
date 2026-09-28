@@ -6,7 +6,7 @@ The frontend and backend are intentionally separated. The React client can be de
 
 ## Demo
 
-The live demo : [click_here](https://storemyfiles.vercel.app/login)
+- **Demo Project:** [StoreMyFiles click_here](https://storemyfiles.vercel.app/login)
 
 ## Features
 
@@ -152,14 +152,14 @@ Import the repository into Vercel and configure the project as follows:
 Add this environment variable in Vercel:
 
 ```env
-VITE_BASE_URL=https://your-backend-service.example.com
+VITE_BASE_URL=https://storemyfiles.onrender.com
 ```
 
 The [client/vercel.json](client/vercel.json) rewrite keeps React Router routes working after a page refresh.
 
-### Backend: independent Node.js hosting
+### Backend: Render
 
-The backend is a standard Express application and can be deployed separately to Koyeb, Render, Railway, or another Node.js service. Use the `server` directory as the service root, `npm install` as the install command, and `npm start` as the production start command. Configure the variables from `server/.env.example` in the hosting provider rather than committing them.
+The Express API is deployed separately on Render. Configure the service with the `server` directory as its root, `npm install` as the build command, and `npm start` as the start command. Add the variables from `server/.env.example` in Render's Environment settings; do not commit real credentials.
 
 After deployment, set the frontend `VITE_BASE_URL` to the API URL and set the backend `ORIGINS` to the Vercel domain.
 
